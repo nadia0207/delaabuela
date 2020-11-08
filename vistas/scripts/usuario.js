@@ -8,18 +8,36 @@ function init(){
     
     // jquery preguntara si del formukario se activa el evento sumbit llamara a la funcion guardar y editar
 	$("#formulario").on("submit",function(e)
-	{
+	   {
 		guardaryeditar(e);
-	})
 
+		})
+
+		 $("#imagenmuestra").hide();
+
+		 //Mostramos los permisos
+		 $.post("../ajax/usuario.php?op=permisos&id=",function(r){
+			$("#permisos").html(r);
+
+		 });
 
 }
 
+
 //funcion limpiar
 function limpiar(){
- $("#v_nombre").val("");
- $("#descripcion").val("");
- $("#idcategoria").val("");
+ $("#nombre").val("");	
+ $("#num_documento").val("");
+ $("#direccion").val("");
+ $("#telefono").val("");
+ $("#email").val("");
+ $("#cargo").val("");
+ $("#login").val("");
+ $("#clave").val("");
+ $("#imagenmuestra").attr("src","");
+ $("#imagenactual").val("");
+  $("#idusuario").val("");
+
 }
 
 //funcion mostrar formulario
@@ -39,6 +57,7 @@ function mostrarform(flag)
 	   $("#listadoregistros").show(); // mostrara el listado	
 	   $("#formularioregistros").hide(); // no mostrara el formulario
 	   $("#btnagregar").show(); //mostrar el boton agregar
+
 	   
 	}
 }
@@ -66,7 +85,7 @@ function listar()
 		        ],
 		"ajax":
 				{
-					url: '../ajax/categoria.php?op=listar',
+					url: '../ajax/usuario.php?op=listar',
 					type : "get",
 					dataType : "json",						
 					error: function(e){
@@ -87,7 +106,7 @@ function guardaryeditar(e)
 	var formData=new FormData($("#formulario")[0]); //se obtiene los datos de todo el formulario y se envia a formData
 
 	$.ajax({
-		url:"../ajax/categoria.php?op=guardaryeditar",
+		url:"../ajax/usuario.php?op=guardaryeditar",
 		type:"POST",
 		data: formData, //los datos que voy a enviar lo obtendre de formData
 		contentType: false, 
@@ -104,25 +123,46 @@ function guardaryeditar(e)
 	limpiar();
 }
 
-function mostrar(idcategoria)
+function mostrar(idusuario)
 {
-	$.post("../ajax/categoria.php?op=mostrar",{idcategoria:idcategoria},function(data,status)
+	//$.post("../ajax/usuario.php?op=mostrar",{idusuario:idusuario},function(data,status)
+	$.post("../ajax/usuario.php?op=mostrar",{idusuario:idusuario},function(data,status)
+
 	{
 		data=JSON.parse(data); //objeto data que covirerte a onjeto javascrip
 		mostrarform(true);
 
-		$("#v_nombre").val(data.v_nombre);
-		$("#descripcion").val(data.v_descripcion);
-		$("#idcategoria").val(data.idcategoria);
-	})
+        $("#nombre").val(data.nombre);
+        $("#tipo_documento").val(data.tipo_documento);
+		$("#tipo_documento").selectpicker('refresh');
+		$("#num_documento").val(data.num_documento);
+		$("#direccion").val(data.direccion);
+		$("#telefono").val(data.telefono);
+        $("#email").val(data.email);
+        $("#cargo").val(data.cargo);
+        $("#login").val(data.login);
+        $("#clave").val(data.clave);
+		$("#imagenmuestra").show();
+		$("#imagenmuestra").attr("src","../files/usuarios/"+data.imagen);
+		$("#imagenactual").val(data.imagen);
+		$("#idusuario").val(data.idusuario); //
+             
+        
+	});
+
+	$.post("../ajax/usuario.php?op=permisos&id="+idusuario,function(r){
+		$("#permisos").html(r);
+
+	 });
 }
 
-function desactivar(idcategoria)
+function desactivar(idusuario)
 {
-	bootbox.confirm("¿Está seguro de descativar la categoria?",function(result){
+	bootbox.confirm("¿Está seguro de descativar el usuario?",function(result){
 		if(result)
 		{
-			$.post("../ajax/categoria.php?op=desactivar",{idcategoria:idcategoria},function(e){
+			//$.post("../ajax/usuario.php?op=desactivar",{idusuario:idusuario},function(e){
+			$.post("../ajax/usuario.php?op=desactivar",{idusuario:idusuario},function(e){
 				bootbox.alert(e);
 				tabla.ajax.reload();
 			});
@@ -131,12 +171,13 @@ function desactivar(idcategoria)
 
 }
 
-function activar(idcategoria)
+function activar(idusuario)
 {
-	bootbox.confirm("¿Está seguro de activar la categoria?",function(result){
+	bootbox.confirm("¿Está seguro de activar el usuario?",function(result){
 		if(result)
 		{
-			$.post("../ajax/categoria.php?op=activar",{idcategoria:idcategoria},function(e){
+			//$.post("../ajax/usuario.php?op=activar",{idusuario:idusuario},function(e){
+			$.post("../ajax/usuario.php?op=activar",{idusuario:idusuario},function(e){
 				bootbox.alert(e);
 				tabla.ajax.reload();
 			});
@@ -144,4 +185,5 @@ function activar(idcategoria)
 	})
 
 }
+
 init();

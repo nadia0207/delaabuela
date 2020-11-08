@@ -33,7 +33,7 @@ if (!function_exists('ejecutarConsulta'))
 	{
 	  global $conexion;
 	  $query=$conexion->query($sql);
-	  return $conexion->inser_id;	
+	  return $conexion->insert_id;	
 	}
 
 	function limpiarCadena($str)

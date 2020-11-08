@@ -27,6 +27,9 @@ function init(){
 function limpiar(){
  $("#v_descripcion").val("");
  $("#i_stock").val("");
+ $("#imagenmuestra").attr("src","");
+ $("#imagenactual").val("");
+ $("#idproducto").val("");
 
 }
 
@@ -39,13 +42,14 @@ function mostrarform(flag)
 	   $("#listadoregistros").hide(); // estara oculto	
 	   $("#formularioregistros").show(); // mostrara el formulario
 	   $("#btnGuardar").prop("disabled",false);//el boton estara activo
+	   $("#btnagregar").hide(); // oculta el boton agregar
 	}
 	else
 	{
 		// es verdad que se muestra el formulario
 	   $("#listadoregistros").show(); // mostrara el listado	
 	   $("#formularioregistros").hide(); // no mostrara el formulario
-	   
+	   $("#btnagregar").show(); //mostrar el boton agregar
 	}
 }
 

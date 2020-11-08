@@ -1,5 +1,26 @@
 <?php
+
+//Activamos el almacenamiento en el buffer
+ob_start();
+session_start();
+
+if(!isset($_SESSION["nombre"]))
+{
+  header("Location:login.html");
+}
+else 
+{
+
+//de aqui no tiene nada que ver con sessiones
 require 'header.php';
+//hasta aqui esta linea required
+
+//para verificar si el usuario puede acceder
+
+if($_SESSION['almacen']==1)
+{
+
+
 ?>
 <!--Contenido-->
       <!-- Content Wrapper. Contains page content -->
@@ -10,7 +31,7 @@ require 'header.php';
               <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                          <h1 class="box-title">Categoria <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                          <h1 class="box-title">Categoria <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
                         <div class="box-tools pull-right">
                         </div>
                     </div>
@@ -70,7 +91,21 @@ require 'header.php';
   <!--Fin-Contenido-->
 
 <?php
+
+//cerramos la llave del if para ver si sepuede acceder a esta pagina
+}
+else {
+ 
+  require 'noacceso.php';
+}
+
 require 'footer.php';
 ?>
 
 <script type="text/javascript" src="scripts/categoria.js"></script>
+
+<?php
+}
+//LIBERA ESPACIO DE BUFFER
+ob_end_flush();
+?>
